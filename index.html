@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LycosAI — Autonomous Quadruped Apex Predator Mesh Networks. The Agentic Deterrence Platform for rural wildlife management at scale." />
+  <meta property="og:title" content="LycosAI — Agentic Deterrence Platform" />
+  <meta property="og:description" content="Restoring the Ghost of the Predator via Edge-Computing. Deployed at scale. Billed monthly." />
+  <title>LycosAI — Agentic Deterrence Platform</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lk':    '#0d0d0d',
+            'lcard': '#161616',
+            'lpanel':'#1a1a1a',
+            'lg':    '#22c55e',
+            'lgd':   '#16a34a',
+            'lr':    '#ef4444',
+            'lrd':   '#dc2626',
+            'llime': '#a3e635',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: #0d0d0d; color: #f5f5f5; font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Tactical grid ── */
+    .tactical-grid {
+      background-color: #0d0d0d;
+      background-image:
+        linear-gradient(rgba(34,197,94,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,197,94,0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    /* ── Scanlines ── */
+    .scanlines { position: relative; }
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 3px,
+        rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── Wolf eye pulse ── */
+    @keyframes eyePulse {
+      0%,100% { filter: drop-shadow(0 0 4px #ef4444) drop-shadow(0 0 8px #ef4444); opacity:.9; }
+      50%      { filter: drop-shadow(0 0 12px #ef4444) drop-shadow(0 0 28px #ef4444) drop-shadow(0 0 48px rgba(239,68,68,.4)); opacity:1; }
+    }
+    .wolf-eye  { animation: eyePulse 2.8s ease-in-out infinite; }
+
+    /* ── Wolf float ── */
+    @keyframes wolfFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    .wolf-float { animation: wolfFloat 6s ease-in-out infinite; }
+
+    /* ── Nav glass ── */
+    .nav-scrolled {
+      background: rgba(13,13,13,.94) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(34,197,94,.12) !important;
+    }
+
+    /* ── Status dot ── */
+    @keyframes statusPulse {
+      0%,100% { opacity:1; }
+      50%      { opacity:.3; }
+    }
+    .status-dot { animation: statusPulse 1.8s ease-in-out infinite; }
+
+    /* ── Classified blink ── */
+    @keyframes classifiedBlink {
+      0%,89%,100% { opacity:1; }
+      90%,98%     { opacity:0; }
+    }
+    .classified-text { animation: classifiedBlink 5s ease-in-out infinite; }
+
+    /* ── Cards ── */
+    .feature-card  { transition: border-color .2s; }
+    .feature-card:hover { border-color: rgba(34,197,94,.35); }
+    .spec-tile     { transition: background .2s, border-color .2s; }
+    .spec-tile:hover { background:#1d1d1d; border-color: rgba(34,197,94,.3); }
+    .pricing-card  { transition: transform .2s, border-color .2s; }
+    .pricing-card:hover { transform: translateY(-4px); }
+
+    /* ── Press ticker ── */
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-track { animation: ticker 28s linear infinite; white-space: nowrap; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    /* ── Form elements ── */
+    .finput {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #262626;
+      color: #f5f5f5;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .finput:focus { border-color: #22c55e; }
+    .finput::placeholder { color: #3f3f3f; }
+    .finput option { background: #111; }
+    input[type="radio"]    { accent-color: #22c55e; }
+    input[type="checkbox"] { accent-color: #22c55e; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0d0d0d; }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+  </style>
+</head>
+
+<body class="bg-[#0d0d0d] text-[#f5f5f5] antialiased overflow-x-hidden">
+
+<!-- ══════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════ -->
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-all duration-300 px-6 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3">
+      <svg width="26" height="24" viewBox="0 0 26 24" fill="none" aria-hidden="true">
+        <!-- Small nav wolf icon -->
+        <path d="M22 13 C21 11 19 9.5 17.5 8.8 C16 8 15.2 7 14.5 5.5 L13.8 3.5 C13.4 2 12.5 1.4 11.6 2 L10.2 5.5 C9 5 7.5 5.8 7.5 7.2 C7.5 8.5 8.2 9.5 9 10 C7.2 11.3 6 13.2 6 15.5 C6 18.8 8.5 21 12 22 C15 22.8 18.5 21.5 20.5 19 C22 17.2 23.2 15 22 13 Z" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="0.6"/>
+        <circle cx="15" cy="9.5" r="2.4" fill="#ef4444" class="wolf-eye"/>
+        <circle cx="15" cy="9.5" r="1" fill="#7f1d1d"/>
+      </svg>
+      <span class="font-black tracking-widest text-base text-white">LYCOSAI</span>
+      <span class="mono text-[9px] bg-[#ef4444] text-white px-1.5 py-0.5 rounded font-bold tracking-wider">ADP</span>
+    </a>
+
+    <!-- Links (desktop) -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#problem"  class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Problem</a>
+      <a href="#solution" class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Solution</a>
+      <a href="#specs"    class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Specs</a>
+      <a href="#pricing"  class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Pricing</a>
+    </div>
+
+    <!-- CTA -->
+    <button onclick="openModal()" class="bg-[#ef4444] hover:bg-[#dc2626] text-white mono text-[10px] font-bold px-4 py-2.5 rounded tracking-widest uppercase transition-colors">
+      Request Deployment
+    </button>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="tactical-grid scanlines min-h-screen flex flex-col items-center justify-center relative overflow-hidden pt-20 pb-12">
+
+  <!-- Corner HUD overlays -->
+  <div class="absolute top-24 left-6 mono text-[#22c55e] text-[9px] opacity-30 select-none hidden lg:block leading-5">
+    <div>▶ SYS: NOMINAL</div>
+    <div>▶ MESH: SYNCHRONIZED</div>
+    <div>▶ UNITS_ACTIVE: 847</div>
+    <div>▶ THREAT_LEVEL: ELEVATED</div>
+  </div>
+  <div class="absolute top-24 right-6 mono text-[#22c55e] text-[9px] opacity-30 text-right select-none hidden lg:block leading-5">
+    <div>LAT 35.6762° N</div>
+    <div>LON 139.6503° E</div>
+    <div>BIOME: SATOYAMA</div>
+    <div>PACK: ONLINE</div>
+  </div>
+
+  <!-- Wolf SVG -->
+  <div class="wolf-float relative z-10 mb-2">
+    <!--
+      Geometric low-poly wolf head — front-facing.
+      All faces are flat polygons; adjacent edges share exact coordinates
+      so there are no gaps. Slight shade differences between faces create
+      the faceted 3-D illusion without any bezier curves.
+    -->
+    <svg width="260" height="280" viewBox="0 0 200 215" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+      <!-- Ambient red glow behind head -->
+      <ellipse cx="100" cy="120" rx="88" ry="72" fill="rgba(239,68,68,0.04)"/>
+
+      <!-- ── BASE SILHOUETTE ─────────────────────────────────────
+           Outer boundary of the entire head + ears.
+           All overlay faces sit on top of this.           -->
+      <polygon
+        points="58,5 28,58 20,125 42,190 100,210 158,190 180,125 172,58 142,5 128,45 100,52 72,45"
+        fill="#1c1c1c"/>
+
+      <!-- ── EARS ─────────────────────────────────────────────── -->
+      <!-- Left ear outer face -->
+      <polygon points="58,5 28,58 72,45"          fill="#242424"/>
+      <!-- Left ear canal (dark hollow) -->
+      <polygon points="58,5 46,53 64,50"           fill="#080808"/>
+
+      <!-- Right ear outer face -->
+      <polygon points="142,5 172,58 128,45"        fill="#242424"/>
+      <!-- Right ear canal -->
+      <polygon points="142,5 154,53 136,50"        fill="#080808"/>
+
+      <!-- ── UPPER FACE ──────────────────────────────────────── -->
+      <!-- Forehead centre — faces viewer directly, brightest plane -->
+      <polygon points="72,45 100,52 128,45 118,88 82,88" fill="#2a2a2a"/>
+
+      <!-- Left brow -->
+      <polygon points="28,58 72,45 82,88 42,98"   fill="#1e1e1e"/>
+      <!-- Right brow -->
+      <polygon points="172,58 128,45 118,88 158,98" fill="#1e1e1e"/>
+
+      <!-- ── MID FACE ─────────────────────────────────────────── -->
+      <!-- Left eye socket plane (slightly inset / shadowed) -->
+      <polygon points="42,98 82,88 76,128 35,120"  fill="#141414"/>
+      <!-- Right eye socket plane -->
+      <polygon points="158,98 118,88 124,128 165,120" fill="#141414"/>
+
+      <!-- Nose bridge — central highlight strip -->
+      <polygon points="82,88 118,88 112,130 88,130" fill="#222222"/>
+
+      <!-- ── LOWER FACE ───────────────────────────────────────── -->
+      <!-- Left cheek (wide angled plane, darkest — facing away) -->
+      <polygon points="35,120 76,128 68,168 20,145" fill="#111111"/>
+      <!-- Right cheek -->
+      <polygon points="165,120 124,128 132,168 180,145" fill="#111111"/>
+
+      <!-- Muzzle centre (flat front plane) -->
+      <polygon points="88,130 112,130 108,168 92,168" fill="#1f1f1f"/>
+
+      <!-- ── JAW / CHIN ───────────────────────────────────────── -->
+      <!-- Left jaw -->
+      <polygon points="20,145 68,168 55,194 42,190" fill="#0f0f0f"/>
+      <!-- Right jaw -->
+      <polygon points="180,145 132,168 145,194 158,190" fill="#0f0f0f"/>
+
+      <!-- Chin front -->
+      <polygon points="92,168 108,168 104,200 96,200" fill="#1a1a1a"/>
+      <!-- Under chin / throat -->
+      <polygon points="55,194 96,200 100,210 104,200 145,194" fill="#0c0c0c"/>
+
+      <!-- ── EYES ─────────────────────────────────────────────── -->
+      <!-- Left — glowing red LED -->
+      <circle class="wolf-eye" cx="58"  cy="108" r="13" fill="#ef4444"/>
+      <circle                  cx="58"  cy="108" r="6"  fill="#7f1d1d"/>
+      <circle                  cx="55"  cy="105" r="2"  fill="#fca5a5" opacity="0.65"/>
+      <rect x="57" y="97" width="2" height="22" rx="1" fill="#1a0000" opacity="0.5"/>
+
+      <!-- Right — glowing red LED -->
+      <circle class="wolf-eye" cx="142" cy="108" r="13" fill="#ef4444"/>
+      <circle                  cx="142" cy="108" r="6"  fill="#7f1d1d"/>
+      <circle                  cx="139" cy="105" r="2"  fill="#fca5a5" opacity="0.65"/>
+      <rect x="141" y="97" width="2" height="22" rx="1" fill="#1a0000" opacity="0.5"/>
+
+      <!-- ── NOSE ─────────────────────────────────────────────── -->
+      <ellipse cx="100" cy="152" rx="10" ry="6.5" fill="#070707"/>
+      <path d="M91,152 Q100,159 109,152" stroke="#1c1c1c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- Tagline badge -->
+  <div class="mono text-[10px] text-[#22c55e] border border-[#22c55e] border-opacity-30 px-3 py-1 rounded-full mb-6 tracking-[0.2em] z-10 select-none">
+    "Restoring the Ghost of the Predator via Edge-Computing"
+  </div>
+
+  <!-- Headline -->
+  <div class="text-center max-w-4xl px-6 z-10">
+    <h1 class="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.0] tracking-tight uppercase text-white mb-3">
+      The Wilderness Is<br>Reclaiming Rural Spaces.
+    </h1>
+    <h2 class="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.0] tracking-tight uppercase text-[#ef4444] mt-2">
+      We Are Reclaiming<br>The Food Chain.
+    </h2>
+  </div>
+
+  <!-- Sub-headline -->
+  <p class="mono text-[#555] text-[11px] sm:text-sm text-center max-w-2xl px-6 mt-6 leading-relaxed z-10">
+    Autonomous Quadruped Apex Predator Mesh Networks.&nbsp;&nbsp;Deployed at prefecture scale.&nbsp;&nbsp;Billed monthly.
+  </p>
+
+  <!-- CTAs -->
+  <div class="flex flex-col sm:flex-row gap-3 mt-8 z-10">
+    <button onclick="openModal()"
+      class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold px-8 py-4 text-xs tracking-widest uppercase transition-colors rounded">
+      Request Early Access
+    </button>
+    <a href="https://www.popsci.com/environment/japan-robot-wolf-army/" target="_blank" rel="noopener noreferrer"
+      class="border border-[#2a2a2a] hover:border-[#22c55e] text-[#555] hover:text-[#22c55e] font-medium px-8 py-4 text-xs tracking-widest uppercase transition-colors rounded mono">
+      Read the Threat Report &nbsp;→
+    </a>
+  </div>
+
+  <!-- Stats row -->
+  <div id="hero-stats" class="grid grid-cols-3 gap-4 md:gap-12 mt-16 px-6 z-10 border-t border-[#1c1c1c] pt-8 w-full max-w-2xl">
+    <div class="text-center">
+      <div class="font-black text-3xl md:text-4xl text-white tabular-nums" data-counter="847">0</div>
+      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Units&nbsp;Active</div>
+    </div>
+    <div class="text-center">
+      <div class="font-black text-3xl md:text-4xl text-white tabular-nums" data-counter="23">0</div>
+      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Prefectures</div>
+    </div>
+    <div class="text-center">
+      <div class="font-black text-3xl md:text-4xl text-[#22c55e] tabular-nums" data-counter="0">0</div>
+      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Bear&nbsp;Incidents</div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-7 left-1/2 -translate-x-1/2 mono text-[#2a2a2a] text-[9px] tracking-widest animate-bounce select-none z-10">
+    SCROLL ↓
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PRESS BAR
+══════════════════════════════════════════ -->
+<div class="bg-[#0a0a0a] border-y border-[#1a1a1a] py-3 overflow-hidden select-none">
+  <div class="ticker-track inline-flex gap-12">
+    <!-- Duplicate for seamless loop -->
+    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI raises $47M Series B to scale autonomous wolf deterrence infrastructure"&nbsp;&mdash;&nbsp;<span class="text-[#444]">TechCrunch</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"The Robot Wolf Army Startup Taking on Japan's Bear Crisis"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Popular Science</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI deploys 400-unit Pack across Akita and Iwate prefectures, zero incidents in Q2"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Nikkei Asia</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"Move over Monster Wolf — the agentic era of wildlife deterrence has arrived"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Wired</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <!-- Duplicate set for seamless loop -->
+    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI raises $47M Series B to scale autonomous wolf deterrence infrastructure"&nbsp;&mdash;&nbsp;<span class="text-[#444]">TechCrunch</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"The Robot Wolf Army Startup Taking on Japan's Bear Crisis"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Popular Science</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI deploys 400-unit Pack across Akita and Iwate prefectures, zero incidents in Q2"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Nikkei Asia</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+    <span class="mono text-[10px] text-[#333] tracking-widest">"Move over Monster Wolf — the agentic era of wildlife deterrence has arrived"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Wired</span></span>
+    <span class="mono text-[10px] text-[#333]">✦</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     THE PROBLEM
+══════════════════════════════════════════ -->
+<section id="problem" class="py-28 px-6 bg-[#0f0f0f]">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mono text-[10px] text-[#ef4444] tracking-widest uppercase mb-3">01 — Market Conditions</div>
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-16 max-w-3xl leading-tight">
+      The Legacy Scarecrow<br>Is Not Scalable.
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+      <!-- Left: copy -->
+      <div class="space-y-6 text-[#888] text-sm leading-relaxed">
+        <p>
+          Japan's rural municipalities face a compounding wildlife crisis with no viable technological pathway to resolution.
+          As of fiscal year 2025,
+          <a href="https://www.popsci.com/environment/japan-robot-wolf-army/" target="_blank" rel="noopener noreferrer"
+             class="text-[#22c55e] hover:text-white transition-colors underline underline-offset-2">
+            over 219 people were attacked by bears in a single year</a>
+          — a recorded high. The structural cause is straightforward: rural depopulation has eliminated the passive human
+          presence that historically served as a biological deterrent, while Japan's licensed hunter population —
+          median age now exceeding 67 — is in secular decline and cannot be replicated at scale. The serviceable addressable
+          market for autonomous apex deterrence is expanding at approximately 18% CAGR. No one has built the
+          infrastructure layer to capture it.
+        </p>
+        <p>
+          Legacy deterrence modalities — airhorns, electrified fencing, rubber-pellet harassment — are point solutions.
+          They require human operators, offer zero terrain coordination, and generate no observability into wildlife
+          movement or behavioral drift. Japan's publicly deployed "Monster Wolf" stationary robotic scarecrow represents
+          the current state of the art: a solar-powered audio playback device with a fixed geographic footprint,
+          no network capability, and a well-documented habituation failure mode in which bears acclimate to the
+          stimulus within 60–90 days of initial exposure. There is no API. There is no SLA. There is no dashboard.
+        </p>
+        <p>
+          LycosAI reframes the rural perimeter as a distributed systems problem. Wildlife incursion is a
+          latency issue. Habituation is a cache invalidation issue. The absence of a coordinated response layer
+          is a single-point-of-failure architecture. We have built the infrastructure to solve all three
+          simultaneously — at prefecture scale, from a single pane of glass, without a single human in the field.
+        </p>
+      </div>
+
+      <!-- Right: competitive analysis card -->
+      <div class="relative">
+        <div class="absolute -top-3 -right-3 bg-[#ef4444] text-white mono text-[9px] font-bold px-2.5 py-1 tracking-widest z-10">INCUMBENT · LEGACY</div>
+        <div class="border border-[#2a2a2a] bg-[#111111] rounded-sm p-6">
+          <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-1">Competitive Analysis</div>
+          <div class="font-bold text-white text-base mb-1">Monster Wolf</div>
+          <div class="mono text-[9px] text-[#333] mb-6">SKU: YDK-700 &nbsp;·&nbsp; Ohta Seiki Co., Ltd. &nbsp;·&nbsp; Est. 2017</div>
+
+          <div class="space-y-2">
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Mobility</span>
+              <span class="mono text-[10px] text-[#ef4444]">Stationary&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Network Capability</span>
+              <span class="mono text-[10px] text-[#ef4444]">None&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">API Endpoints</span>
+              <span class="mono text-[10px] text-[#ef4444]">0&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Units Coordinated</span>
+              <span class="mono text-[10px] text-[#ef4444]">1 (standalone)&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Species Classification</span>
+              <span class="mono text-[10px] text-[#ef4444]">None&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Power Source</span>
+              <span class="mono text-[10px] text-[#f97316]">Solar (weather-dependent)&nbsp;&nbsp;⚠</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Habituation Cliff</span>
+              <span class="mono text-[10px] text-[#ef4444]">60–90 days&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#1a1a1a]">
+              <span class="mono text-[10px] text-[#555]">Deployment SLA</span>
+              <span class="mono text-[10px] text-[#ef4444]">None&nbsp;&nbsp;✕</span>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <span class="mono text-[10px] text-[#555]">Observability Dashboard</span>
+              <span class="mono text-[10px] text-[#ef4444]">None&nbsp;&nbsp;✕</span>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[#1a1a1a] mono text-[9px] text-[#333] leading-5">
+            Source: manufacturer documentation, field testing by LycosAI Field Ops Team.<br>
+            All assessments as of Q1 2026. Subject to change without notice.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     THE SOLUTION
+══════════════════════════════════════════ -->
+<section id="solution" class="py-28 px-6 bg-[#0d0d0d] tactical-grid">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">02 — Platform Architecture</div>
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-4 max-w-4xl leading-tight">
+      Pack-Mind Autonomous<br>Deterrence Infrastructure
+    </h2>
+    <p class="text-[#555] text-sm max-w-xl mb-16 leading-relaxed">
+      Three integrated subsystems. One unified command surface. Zero legacy dependencies.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Card 1: Pack-Mind Mesh -->
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-7">
+        <div class="text-3xl mb-5 select-none">⬡</div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot"></div>
+          <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Pack-Mind<br>Mesh Networking</h3>
+        <p class="text-[#666] text-sm leading-relaxed mb-5">
+          Every deployed unit participates in a self-organizing, self-healing peer-to-peer mesh with sub-50ms latency.
+          Topology adapts dynamically to unit failure, terrain occlusion, and pack formation changes.
+          No centralized coordinator. No single point of failure. The pack thinks as one.
+        </p>
+        <div class="mono text-[9px] text-[#333] space-y-1">
+          <div>↳ Sub-50ms mesh consensus</div>
+          <div>↳ Self-healing topology</div>
+          <div>↳ LoRa + LTE failover</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Computer Vision -->
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-7">
+        <div class="text-3xl mb-5 select-none">◉</div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot" style="animation-delay:.4s"></div>
+          <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Computer Vision<br>Species Classification</h3>
+        <p class="text-[#666] text-sm leading-relaxed mb-5">
+          Dual LWIR and RGB sensor fusion enables accurate species identification at 40 meters in total darkness.
+          Our YOLO-derivative edge model achieves 94.7% classification accuracy across bear, boar, and deer threat
+          vectors — running entirely on-device, with no cloud round-trip required for deterrence dispatch.
+        </p>
+        <div class="mono text-[9px] text-[#333] space-y-1">
+          <div>↳ 94.7% species accuracy</div>
+          <div>↳ 40m effective range</div>
+          <div>↳ 4 TOPS on-device NPU</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Acoustic Deterrence -->
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-7">
+        <div class="text-3xl mb-5 select-none">))))</div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot" style="animation-delay:.8s"></div>
+          <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Dynamic Acoustic<br>Deterrence Array</h3>
+        <p class="text-[#666] text-sm leading-relaxed mb-5">
+          A 95dB omnidirectional speaker system with a library of 37 species-matched wolf vocalizations, dynamically
+          selected per threat classification to prevent habituation. Frequency modulation adapts in real time based
+          on behavioral telemetry from adjacent units. Sound is not static. Sound is a service.
+        </p>
+        <div class="mono text-[9px] text-[#333] space-y-1">
+          <div>↳ 95dB omnidirectional output</div>
+          <div>↳ 37 vocalization profiles</div>
+          <div>↳ Adaptive anti-habituation engine</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Architecture callout -->
+    <div class="mt-10 border border-[#1a1a1a] bg-[#0e0e0e] rounded-sm p-6 flex flex-col md:flex-row items-start md:items-center gap-6">
+      <div class="mono text-[10px] text-[#22c55e] tracking-widest whitespace-nowrap">ARCHITECTURE NOTE</div>
+      <div class="w-px h-8 bg-[#1e1e1e] hidden md:block"></div>
+      <p class="mono text-[10px] text-[#444] leading-relaxed">
+        All LycosAI units operate in a fully offline-capable mode. Pack-Mind consensus, species classification, and
+        acoustic dispatch require zero cloud connectivity during active deterrence events. Telemetry and firmware
+        updates are synchronized during low-activity windows via LTE. The perimeter does not depend on your uplink.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TECHNICAL SPECIFICATIONS
+══════════════════════════════════════════ -->
+<section id="specs" class="py-28 px-6 bg-[#0a0a0a]">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">03 — Hardware Platform</div>
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-16 max-w-3xl leading-tight">
+      Platform Specifications
+    </h2>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Power System</div>
+        <div class="font-bold text-white text-sm leading-tight">48-Hour Tactical<br>Hydrogen Fuel Cell</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Locomotion</div>
+        <div class="font-bold text-white text-sm leading-tight">Quadruped All-Terrain<br>Gait — 14 km/h sustained</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Acoustic Output</div>
+        <div class="font-bold text-white text-sm leading-tight">95 dB Omnidirectional<br>Disruptor Array</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Sensor Suite</div>
+        <div class="font-bold text-white text-sm leading-tight">Dual LWIR + RGB<br>Fusion — 40m range</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Communications</div>
+        <div class="font-bold text-white text-sm leading-tight">Sub-50ms Mesh<br>LoRa + LTE failover</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Environmental</div>
+        <div class="font-bold text-white text-sm leading-tight">IP68 — −30°C to<br>+55°C operational</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Edge Compute</div>
+        <div class="font-bold text-white text-sm leading-tight">4 TOPS NPU — 94.7%<br>species accuracy</div>
+      </div>
+
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Compliance</div>
+        <div class="font-bold text-white text-sm leading-tight">J-SOC Tier II<br>MIC Radio Law</div>
+      </div>
+
+    </div>
+
+    <!-- Spec footnote -->
+    <div class="mt-8 mono text-[9px] text-[#2a2a2a] leading-6">
+      All specifications represent nominal field performance. Sustained 14 km/h gait measured across Type-3 satoyama terrain at 15°C ambient.
+      Hydrogen refuel canister exchange performed by certified LycosAI Field Operations personnel.
+      94.7% species classification accuracy measured against JSDB-v4 validation set (n=48,200 annotated thermal frames).
+      J-SOC Tier II certification pending final field audit — expected Q3 2026.
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════ -->
+<section id="pricing" class="py-28 px-6 bg-[#0d0d0d] tactical-grid">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">04 — Commercial Terms</div>
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-3 leading-tight">
+      Agentic Deterrence Platform
+    </h2>
+    <p class="text-[#555] text-sm mb-16 max-w-lg leading-relaxed">
+      Transparent, usage-based, mission-critical pricing. Annual contracts available with volume discount upon request.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6 items-start">
+
+      <!-- Scout -->
+      <div class="pricing-card border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-7">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-4">Tier 01</div>
+        <div class="font-black text-2xl text-white mb-1">Scout</div>
+        <div class="flex items-end gap-1 mb-6">
+          <span class="font-black text-4xl text-white">$2,500</span>
+          <span class="mono text-[11px] text-[#444] mb-1.5">/month</span>
+        </div>
+        <div class="space-y-3 mb-8 text-sm">
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>3 autonomous quadruped units</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>1 biome coverage zone (up to 120 ha)</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Standard Pack-Mind mesh formation</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Web observability dashboard</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Email support (48-hr SLA)</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>72-hour deployment SLA</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#555]">
+            <span class="mt-0.5 shrink-0">—</span>
+            <span>SOC monitoring</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#555]">
+            <span class="mt-0.5 shrink-0">—</span>
+            <span>Custom acoustic signature</span>
+          </div>
+        </div>
+        <button onclick="openModal()"
+          class="w-full border border-[#2a2a2a] hover:border-[#22c55e] text-[#888] hover:text-[#22c55e] mono text-[10px] tracking-widest uppercase py-3 transition-colors rounded-sm">
+          Start Scout Deployment
+        </button>
+      </div>
+
+      <!-- Pack (featured) -->
+      <div class="pricing-card border border-[#22c55e] border-opacity-50 bg-[#0f0f0f] rounded-sm p-7 relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#22c55e] text-black mono text-[9px] font-bold px-3 py-1 tracking-widest whitespace-nowrap">
+          MOST DEPLOYED
+        </div>
+        <div class="mono text-[9px] text-[#22c55e] tracking-widest uppercase mb-4">Tier 02</div>
+        <div class="font-black text-2xl text-white mb-1">Pack</div>
+        <div class="flex items-end gap-1 mb-6">
+          <span class="font-black text-4xl text-white">$12,000</span>
+          <span class="mono text-[11px] text-[#444] mb-1.5">/month</span>
+        </div>
+        <div class="space-y-3 mb-8 text-sm">
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>15 autonomous quadruped units</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>5 biome coverage zones (up to 800 ha)</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Priority Pack-Mind mesh routing</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Species incident reporting dashboard</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>24/7 SOC monitoring &amp; alerting</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>Phone + email support (4-hr SLA)</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#aaa]">
+            <span class="text-[#22c55e] mt-0.5 shrink-0">✓</span>
+            <span>24-hour deployment SLA</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#555]">
+            <span class="mt-0.5 shrink-0">—</span>
+            <span>Custom acoustic signature</span>
+          </div>
+        </div>
+        <button onclick="openModal()"
+          class="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold mono text-[10px] tracking-widest uppercase py-3 transition-colors rounded-sm">
+          Start Pack Deployment
+        </button>
+      </div>
+
+      <!-- Alpha -->
+      <div class="pricing-card border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-7 relative">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-4">Tier 03</div>
+        <div class="font-black text-2xl text-white mb-1">Alpha</div>
+        <div class="mb-6">
+          <span class="font-black text-4xl text-[#ef4444] classified-text tracking-widest">CLASSIFIED</span>
+        </div>
+        <div class="space-y-3 mb-8 text-sm">
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Unlimited unit deployment</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Sovereign territory coverage</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Custom acoustic signature tuning</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Dedicated field operations team</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Air-gapped command infrastructure</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Direct line to Deployment Engineering</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Custom SLA — negotiated per theater</span>
+          </div>
+          <div class="flex items-start gap-3 text-[#888]">
+            <span class="text-[#ef4444] mt-0.5 shrink-0">✓</span>
+            <span>Everything in Pack, plus more</span>
+          </div>
+        </div>
+        <button onclick="openModal()"
+          class="w-full border border-[#ef4444] border-opacity-50 hover:border-opacity-100 text-[#ef4444] mono text-[10px] tracking-widest uppercase py-3 transition-colors rounded-sm">
+          Contact Deployment Engineering
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Pricing footnote -->
+    <div class="mt-10 mono text-[9px] text-[#2a2a2a] leading-6">
+      All prices in USD. Annual pre-payment available at 15% discount. Hydrogen fuel cell consumables billed separately at market rate.
+      Biome coverage zones defined by LycosAI terrain classification protocol v2.3. Zone boundary disputes resolved by Field Operations.
+      Alpha tier pricing subject to NDA prior to disclosure. LycosAI reserves the right to reassign units between deployments during low-threat periods.
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="bg-[#080808] border-t border-[#141414] px-6 pt-16 pb-10">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="grid md:grid-cols-4 gap-12 mb-14">
+
+      <!-- Brand -->
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <svg width="22" height="20" viewBox="0 0 26 24" fill="none" aria-hidden="true">
+            <path d="M22 13 C21 11 19 9.5 17.5 8.8 C16 8 15.2 7 14.5 5.5 L13.8 3.5 C13.4 2 12.5 1.4 11.6 2 L10.2 5.5 C9 5 7.5 5.8 7.5 7.2 C7.5 8.5 8.2 9.5 9 10 C7.2 11.3 6 13.2 6 15.5 C6 18.8 8.5 21 12 22 C15 22.8 18.5 21.5 20.5 19 C22 17.2 23.2 15 22 13 Z" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="0.6"/>
+            <circle cx="15" cy="9.5" r="2.4" fill="#ef4444" class="wolf-eye"/>
+            <circle cx="15" cy="9.5" r="1" fill="#7f1d1d"/>
+          </svg>
+          <span class="font-black tracking-widest text-sm text-white">LYCOSAI</span>
+          <span class="mono text-[9px] bg-[#ef4444] text-white px-1.5 py-0.5 rounded font-bold tracking-wider">ADP</span>
+        </div>
+        <p class="text-[#444] text-sm leading-relaxed max-w-xs">
+          Restoring the Ghost of the Predator via Edge-Computing.
+          Building the infrastructure layer for autonomous wildlife deterrence at prefecture scale.
+        </p>
+        <div class="mt-5 mono text-[9px] text-[#2a2a2a]">
+          Headquarters: San Francisco, CA&nbsp;&nbsp;·&nbsp;&nbsp;Field Ops: Akita, Japan
+        </div>
+      </div>
+
+      <!-- Platform -->
+      <div>
+        <div class="mono text-[9px] text-[#333] tracking-widest uppercase mb-4">Platform</div>
+        <div class="space-y-3 text-sm text-[#444]">
+          <div><a href="#solution" class="hover:text-[#22c55e] transition-colors">Pack-Mind Mesh</a></div>
+          <div><a href="#specs" class="hover:text-[#22c55e] transition-colors">Hardware Specs</a></div>
+          <div><a href="#pricing" class="hover:text-[#22c55e] transition-colors">Pricing</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">API Reference</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Status Page</a></div>
+        </div>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <div class="mono text-[9px] text-[#333] tracking-widest uppercase mb-4">Company</div>
+        <div class="space-y-3 text-sm text-[#444]">
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">About</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Careers</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Security</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Privacy Policy</a></div>
+          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Terms of Service</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-[#141414] pt-8">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="mono text-[9px] text-[#2a2a2a] leading-6">
+          © 2026 LycosAI, Inc. All rights reserved.&nbsp;&nbsp;LycosAI.com<br>
+          Pack-Mind and Agentic Deterrence Platform are trademarks of LycosAI, Inc.<br>
+          Not responsible for territory disputes between autonomous units.
+        </div>
+        <div class="mono text-[9px] text-[#222] text-right">
+          Backed by nature.&nbsp;&nbsp;Billed monthly.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL — DEPLOYMENT REQUEST
+══════════════════════════════════════════ -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="bg-[#0f0f0f] border border-[#1e1e1e] rounded-sm w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
+
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-6 border-b border-[#1a1a1a]">
+      <div>
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-1">LycosAI Field Ops</div>
+        <div id="modal-title" class="font-bold text-white text-base">Deployment Request</div>
+      </div>
+      <button onclick="closeModal()" class="text-[#333] hover:text-[#ef4444] transition-colors text-xl leading-none" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Step progress -->
+    <div class="flex items-center gap-2 px-6 py-4 border-b border-[#141414]">
+      <div id="step-dot-1" class="step-dot w-2 h-2 rounded-full bg-[#22c55e] transition-colors"></div>
+      <div class="flex-1 h-px bg-[#1a1a1a]"></div>
+      <div id="step-dot-2" class="step-dot w-2 h-2 rounded-full bg-[#1a1a1a] transition-colors"></div>
+      <div class="flex-1 h-px bg-[#1a1a1a]"></div>
+      <div id="step-dot-3" class="step-dot w-2 h-2 rounded-full bg-[#1a1a1a] transition-colors"></div>
+      <div class="flex-1 h-px bg-[#1a1a1a]"></div>
+      <div id="step-dot-4" class="step-dot w-2 h-2 rounded-full bg-[#1a1a1a] transition-colors"></div>
+      <div class="mono text-[9px] text-[#333] ml-3" id="step-label">Step 1 of 3</div>
+    </div>
+
+    <!-- ── Step 1: Organization ── -->
+    <div id="modal-step-1" class="p-6 space-y-5">
+      <div>
+        <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-4">01 — Organization Profile</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Organization Name *</label>
+        <input type="text" id="org-name" class="finput" placeholder="Akita Prefecture Rural Affairs Bureau" />
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Organization Type *</label>
+        <select id="org-type" class="finput">
+          <option value="" disabled selected>Select type...</option>
+          <option>Municipal Government</option>
+          <option>Prefectural Government</option>
+          <option>Agricultural Cooperative</option>
+          <option>Private Landowner</option>
+          <option>Defense Contractor</option>
+          <option>Research Institution</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Country of Deployment *</label>
+        <input type="text" id="org-country" class="finput" placeholder="Japan" />
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Contact Email *</label>
+        <input type="email" id="org-email" class="finput" placeholder="operations@example.gov.jp" />
+      </div>
+      <div class="pt-2 flex justify-end">
+        <button onclick="nextStep(2)"
+          class="bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold mono text-[10px] tracking-widest uppercase px-6 py-3 rounded-sm transition-colors">
+          Next: Threat Assessment →
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Step 2: Threat Assessment ── -->
+    <div id="modal-step-2" class="p-6 space-y-5 hidden">
+      <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-4">02 — Threat Assessment</div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Total Perimeter to Defend (hectares) *</label>
+        <input type="number" id="threat-hectares" class="finput" placeholder="250" min="1" />
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-3">Primary Threat Vectors (select all that apply) *</label>
+        <div class="space-y-2.5">
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="checkbox" class="finput-check w-4 h-4 flex-shrink-0" value="bear">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors"><span class="mono text-[10px] text-[#444]">Ursidae</span>&nbsp;— Brown Bear (<em>Ursus arctos</em>)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="checkbox" class="finput-check w-4 h-4 flex-shrink-0" value="boar">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors"><span class="mono text-[10px] text-[#444]">Suidae</span>&nbsp;— Wild Boar (<em>Sus scrofa</em>)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="checkbox" class="finput-check w-4 h-4 flex-shrink-0" value="deer">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors"><span class="mono text-[10px] text-[#444]">Cervidae</span>&nbsp;— Sika Deer (<em>Cervus nippon</em>)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="checkbox" class="finput-check w-4 h-4 flex-shrink-0" value="other">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors"><span class="mono text-[10px] text-[#444]">Other</span>&nbsp;— Specify in notes</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Current Deterrence Infrastructure</label>
+        <select id="threat-current" class="finput">
+          <option value="" disabled selected>Select current solution...</option>
+          <option>None — unprotected perimeter</option>
+          <option>Legacy scarecrow / noise device</option>
+          <option>Electric fencing</option>
+          <option>Human patrol</option>
+          <option>Monster Wolf (competitor)</option>
+          <option>Other stationary device</option>
+          <option>Mixed / ad hoc</option>
+        </select>
+      </div>
+      <div class="pt-2 flex justify-between">
+        <button onclick="nextStep(1)"
+          class="border border-[#2a2a2a] hover:border-[#444] text-[#555] hover:text-[#888] mono text-[10px] tracking-widest uppercase px-5 py-3 rounded-sm transition-colors">
+          ← Back
+        </button>
+        <button onclick="nextStep(3)"
+          class="bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold mono text-[10px] tracking-widest uppercase px-6 py-3 rounded-sm transition-colors">
+          Next: Deployment Parameters →
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Step 3: Deployment Parameters ── -->
+    <div id="modal-step-3" class="p-6 space-y-5 hidden">
+      <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-4">03 — Deployment Parameters</div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-3">Requested Tier *</label>
+        <div class="space-y-2.5">
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="radio" name="tier" value="scout" class="w-4 h-4 flex-shrink-0">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors">
+              <span class="text-white font-semibold">Scout</span>&nbsp;&nbsp;<span class="mono text-[10px] text-[#444]">$2,500/mo — 3 units, 1 biome</span>
+            </span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="radio" name="tier" value="pack" class="w-4 h-4 flex-shrink-0">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors">
+              <span class="text-white font-semibold">Pack</span>&nbsp;&nbsp;<span class="mono text-[10px] text-[#444]">$12,000/mo — 15 units, 5 biomes</span>
+            </span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input type="radio" name="tier" value="alpha" class="w-4 h-4 flex-shrink-0">
+            <span class="text-[#777] text-sm group-hover:text-[#aaa] transition-colors">
+              <span class="text-white font-semibold">Alpha</span>&nbsp;&nbsp;<span class="mono text-[10px] text-[#444]">Classified — Sovereign deployment</span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Desired Deployment Timeline *</label>
+        <select id="deploy-timeline" class="finput">
+          <option value="" disabled selected>Select timeline...</option>
+          <option>Immediately — perimeter is unsecured</option>
+          <option>Within 30 days</option>
+          <option>Q3 2026 planning window</option>
+          <option>2027 budget cycle</option>
+        </select>
+      </div>
+      <div>
+        <label class="mono text-[10px] text-[#555] tracking-widest uppercase block mb-2">Operational Notes</label>
+        <textarea id="deploy-notes" class="finput" rows="4"
+          placeholder="Describe your biome topology, terrain classification, any known habituation history with prior deterrence infrastructure, and special operational constraints..."></textarea>
+      </div>
+      <div class="pt-2 flex justify-between">
+        <button onclick="nextStep(2)"
+          class="border border-[#2a2a2a] hover:border-[#444] text-[#555] hover:text-[#888] mono text-[10px] tracking-widest uppercase px-5 py-3 rounded-sm transition-colors">
+          ← Back
+        </button>
+        <button onclick="submitModal()"
+          class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold mono text-[10px] tracking-widest uppercase px-6 py-3 rounded-sm transition-colors">
+          Submit Deployment Request
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Step 4: Confirmation ── -->
+    <div id="modal-step-4" class="p-6 hidden text-center">
+      <div class="py-8">
+        <div class="text-5xl mb-6 select-none">✦</div>
+        <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">Request Received</div>
+        <h3 class="font-black text-xl text-white uppercase tracking-wide mb-3">Deployment Request<br>Confirmed</h3>
+        <div class="mono text-[11px] text-[#ef4444] mb-6" id="ref-number">LYC-000000</div>
+        <p class="text-[#555] text-sm leading-relaxed max-w-xs mx-auto mb-8">
+          Our Field Operations team will contact you within <strong class="text-[#888]">one business day</strong>
+          to confirm your biome assessment and deployment timeline.
+          Keep your perimeter secured in the interim.
+        </p>
+        <div class="border border-[#1a1a1a] bg-[#0a0a0a] rounded-sm p-4 mono text-[9px] text-[#333] leading-5 text-left">
+          <div>▶ Request logged to deployment queue</div>
+          <div>▶ Field Ops assignment: pending</div>
+          <div>▶ Unit allocation: pending biome survey</div>
+          <div>▶ Estimated first contact: &lt; 24 hours</div>
+        </div>
+        <button onclick="closeModal()"
+          class="mt-8 border border-[#2a2a2a] hover:border-[#22c55e] text-[#555] hover:text-[#22c55e] mono text-[10px] tracking-widest uppercase px-8 py-3 rounded-sm transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  // ── Nav scroll glass ──────────────────────
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav-scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // ── Counter animation ─────────────────────
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.counter, 10);
+    if (target === 0) return; // stays 0
+    const duration = 1800;
+    const start = performance.now();
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      el.textContent = Math.floor(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-counter]').forEach(animateCounter);
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const statsEl = document.getElementById('hero-stats');
+  if (statsEl) statsObserver.observe(statsEl);
+
+  // ── Modal ─────────────────────────────────
+  let currentStep = 1;
+
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    goToStep(1);
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function goToStep(n) {
+    currentStep = n;
+    [1, 2, 3, 4].forEach(i => {
+      const el = document.getElementById('modal-step-' + i);
+      const dot = document.getElementById('step-dot-' + i);
+      if (el) el.classList.toggle('hidden', i !== n);
+      if (dot) dot.style.background = i <= n ? '#22c55e' : '#1a1a1a';
+    });
+    const label = document.getElementById('step-label');
+    if (label) label.textContent = n < 4 ? `Step ${n} of 3` : 'Complete';
+  }
+
+  function nextStep(n) {
+    if (n > currentStep && !validateStep(currentStep)) return;
+    goToStep(n);
+  }
+
+  function validateStep(step) {
+    if (step === 1) {
+      const name    = document.getElementById('org-name').value.trim();
+      const type    = document.getElementById('org-type').value;
+      const country = document.getElementById('org-country').value.trim();
+      const email   = document.getElementById('org-email').value.trim();
+      if (!name || !type || !country || !email) {
+        showValidationHint('Please complete all required fields.');
+        return false;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showValidationHint('Please enter a valid email address.');
+        return false;
+      }
+    }
+    if (step === 2) {
+      const ha = document.getElementById('threat-hectares').value;
+      const checked = document.querySelectorAll('.finput-check:checked').length;
+      if (!ha || ha < 1) {
+        showValidationHint('Please enter your perimeter size in hectares.');
+        return false;
+      }
+      if (checked === 0) {
+        showValidationHint('Please select at least one primary threat vector.');
+        return false;
+      }
+    }
+    if (step === 3) {
+      const tier = document.querySelector('input[name="tier"]:checked');
+      const timeline = document.getElementById('deploy-timeline').value;
+      if (!tier) {
+        showValidationHint('Please select a deployment tier.');
+        return false;
+      }
+      if (!timeline) {
+        showValidationHint('Please select a deployment timeline.');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function showValidationHint(msg) {
+    // Simple inline alert — keeps it clean
+    const existing = document.getElementById('modal-validation-hint');
+    if (existing) existing.remove();
+    const hint = document.createElement('div');
+    hint.id = 'modal-validation-hint';
+    hint.className = 'mx-6 mb-0 mt-0 border border-[#ef4444] border-opacity-40 bg-[#1a0000] mono text-[10px] text-[#ef4444] px-4 py-2.5 tracking-wide rounded-sm';
+    hint.textContent = '⚠ ' + msg;
+    const activeStep = document.getElementById('modal-step-' + currentStep);
+    activeStep.insertBefore(hint, activeStep.firstChild);
+    setTimeout(() => hint.remove(), 3500);
+  }
+
+  function submitModal() {
+    if (!validateStep(3)) return;
+    const refNum = 'LYC-' + String(Math.floor(100000 + Math.random() * 900000));
+    document.getElementById('ref-number').textContent = refNum;
+    goToStep(4);
+  }
+</script>
+
+</body>
+</html>
