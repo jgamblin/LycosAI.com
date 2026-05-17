@@ -104,12 +104,14 @@
     .pricing-card  { transition: transform .2s, border-color .2s; }
     .pricing-card:hover { transform: translateY(-4px); }
 
-    /* ── Press ticker ── */
-    @keyframes ticker {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    /* ── Terminal telemetry ticker ── */
+    .telemetry-bar { font-family: 'JetBrains Mono', monospace; }
+    @keyframes termFade {
+      0%,8%   { opacity:0; transform: translateY(4px); }
+      12%,88% { opacity:1; transform: translateY(0); }
+      92%,100%{ opacity:0; transform: translateY(-4px); }
     }
-    .ticker-track { animation: ticker 28s linear infinite; white-space: nowrap; }
+    .term-line { animation: termFade 3.6s ease-in-out forwards; }
 
     /* ── Modal ── */
     .modal-overlay {
@@ -173,10 +175,11 @@
 
     <!-- Links (desktop) -->
     <div class="hidden md:flex items-center gap-8">
-      <a href="#problem"  class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Problem</a>
-      <a href="#solution" class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Solution</a>
-      <a href="#specs"    class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Specs</a>
-      <a href="#access"   class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Access</a>
+      <a href="#problem"    class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Problem</a>
+      <a href="#solution"   class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Solution</a>
+      <a href="#compliance" class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Compliance</a>
+      <a href="#specs"      class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Specs</a>
+      <a href="#access"     class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Access</a>
     </div>
 
     <!-- CTA -->
@@ -334,29 +337,15 @@
 
 
 <!-- ══════════════════════════════════════════
-     PRESS BAR
+     TELEMETRY STATUS BAR
 ══════════════════════════════════════════ -->
-<div class="bg-[#0a0a0a] border-y border-[#1a1a1a] py-3 overflow-hidden select-none">
-  <div class="ticker-track inline-flex gap-12">
-    <!-- Duplicate for seamless loop -->
-    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI raises $47M Series B to scale autonomous wolf deterrence infrastructure"&nbsp;&mdash;&nbsp;<span class="text-[#444]">TechCrunch</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"The Robot Wolf Army Startup Taking on Japan's Bear Crisis"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Popular Science</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI deploys 400-unit Pack across Akita and Iwate prefectures, zero incidents in Q2"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Nikkei Asia</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"Move over Monster Wolf — the agentic era of wildlife deterrence has arrived"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Wired</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <!-- Duplicate set for seamless loop -->
-    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI raises $47M Series B to scale autonomous wolf deterrence infrastructure"&nbsp;&mdash;&nbsp;<span class="text-[#444]">TechCrunch</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"The Robot Wolf Army Startup Taking on Japan's Bear Crisis"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Popular Science</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"LycosAI deploys 400-unit Pack across Akita and Iwate prefectures, zero incidents in Q2"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Nikkei Asia</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
-    <span class="mono text-[10px] text-[#333] tracking-widest">"Move over Monster Wolf — the agentic era of wildlife deterrence has arrived"&nbsp;&mdash;&nbsp;<span class="text-[#444]">Wired</span></span>
-    <span class="mono text-[10px] text-[#333]">✦</span>
+<div class="telemetry-bar bg-[#080808] border-y border-[#1a1a1a] py-2.5 px-6 flex items-center gap-4 select-none overflow-hidden">
+  <div class="flex items-center gap-2 shrink-0">
+    <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot"></div>
+    <span class="text-[9px] text-[#22c55e] tracking-widest uppercase">Live Telemetry</span>
   </div>
+  <div class="w-px h-4 bg-[#1e1e1e] shrink-0"></div>
+  <div id="telemetry-line" class="text-[10px] text-[#444] tracking-wide truncate"></div>
 </div>
 
 
@@ -556,12 +545,66 @@
 
 
 <!-- ══════════════════════════════════════════
-     TECHNICAL SPECIFICATIONS
+     ENTERPRISE COMPLIANCE
 ══════════════════════════════════════════ -->
-<section id="specs" class="py-20 px-6 bg-[#0a0a0a]">
+<section id="compliance" class="py-20 px-6 bg-[#0a0a0a]">
   <div class="max-w-7xl mx-auto">
 
-    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">03 — Hardware Platform</div>
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">03 — Infrastructure &amp; Compliance</div>
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-4 max-w-3xl leading-tight text-balance">
+      Enterprise-Grade Security Architecture
+    </h2>
+    <p class="text-[#555] text-sm max-w-xl mb-12 leading-relaxed">
+      Built to the same standards as critical national infrastructure. Every layer — from edge firmware to cloud telemetry — is audited, authenticated, and hardened.
+    </p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-6">
+        <div class="mono text-[9px] text-[#ef4444] tracking-widest uppercase mb-4">Threat Modeling</div>
+        <h3 class="font-bold text-white text-sm mb-3 leading-snug">EPSS-Driven<br>Perimeter Intelligence</h3>
+        <p class="text-[#555] text-xs leading-relaxed">
+          Exploit Prediction Scoring System methodologies applied to perimeter vulnerability triage. Historical telemetry drives real-time prioritization of deterrence response.
+        </p>
+      </div>
+
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-6">
+        <div class="mono text-[9px] text-[#ef4444] tracking-widest uppercase mb-4">Data Governance</div>
+        <h3 class="font-bold text-white text-sm mb-3 leading-snug">SOC 2 Type II<br>Certified</h3>
+        <p class="text-[#555] text-xs leading-relaxed">
+          Enterprise-grade data handling for municipal and corporate edge analytics. Annual third-party audit covers availability, confidentiality, and processing integrity controls.
+        </p>
+      </div>
+
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-6">
+        <div class="mono text-[9px] text-[#ef4444] tracking-widest uppercase mb-4">Network Security</div>
+        <h3 class="font-bold text-white text-sm mb-3 leading-snug">Zero-Trust<br>Mesh Topology</h3>
+        <p class="text-[#555] text-xs leading-relaxed">
+          Every autonomous unit requires mutual TLS (mTLS) authentication for all peer-to-peer communication. No implicit trust. No perimeter exceptions. Identity verified per-packet.
+        </p>
+      </div>
+
+      <div class="feature-card border border-[#1e1e1e] bg-[#111] rounded-sm p-6">
+        <div class="mono text-[9px] text-[#ef4444] tracking-widest uppercase mb-4">Interoperability</div>
+        <h3 class="font-bold text-white text-sm mb-3 leading-snug">SCADA &amp; Legacy<br>Infrastructure API</h3>
+        <p class="text-[#555] text-xs leading-relaxed">
+          Direct API hooks for existing municipal public safety networks and industrial SCADA systems. Modbus, DNP3, and REST adapters available. No rip-and-replace required.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TECHNICAL SPECIFICATIONS
+══════════════════════════════════════════ -->
+<section id="specs" class="py-20 px-6 bg-[#0d0d0d] tactical-grid">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">04 — Hardware Platform</div>
     <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-10 max-w-3xl leading-tight text-balance">
       Platform Specifications
     </h2>
@@ -569,53 +612,52 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
-        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Power System</div>
-        <div class="font-bold text-white text-sm leading-tight">48-Hour Tactical<br>Hydrogen Fuel Cell</div>
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Edge Compute</div>
+        <div class="font-bold text-white text-sm leading-snug">TPU/NPU Cluster<br><span class="text-[#555] font-normal text-xs">On-device CV inference — zero cloud dependency</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
         <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Locomotion</div>
-        <div class="font-bold text-white text-sm leading-tight">Quadruped All-Terrain<br>Gait — 14 km/h sustained</div>
+        <div class="font-bold text-white text-sm leading-snug">Quadruped All-Terrain<br><span class="text-[#555] font-normal text-xs">14 km/h sustained — Type-3 satoyama rated</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
         <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Acoustic Output</div>
-        <div class="font-bold text-white text-sm leading-tight">95 dB Omnidirectional<br>Disruptor Array</div>
+        <div class="font-bold text-white text-sm leading-snug">95 dB Omnidirectional<br><span class="text-[#555] font-normal text-xs">37 vocalization profiles — adaptive anti-habituation</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
         <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Sensor Suite</div>
-        <div class="font-bold text-white text-sm leading-tight">Dual LWIR + RGB<br>Fusion — 40m range</div>
+        <div class="font-bold text-white text-sm leading-snug">Dual LWIR + RGB Fusion<br><span class="text-[#555] font-normal text-xs">40m effective range — total-darkness capable</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
-        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Communications</div>
-        <div class="font-bold text-white text-sm leading-tight">Sub-50ms Mesh<br>LoRa + LTE failover</div>
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Connectivity</div>
+        <div class="font-bold text-white text-sm leading-snug">IEEE 802.11ah Wi-Fi HaLow<br><span class="text-[#555] font-normal text-xs">+ sub-GHz mesh — long-range wilderness penetration</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
-        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Environmental</div>
-        <div class="font-bold text-white text-sm leading-tight">IP68 — −30°C to<br>+55°C operational</div>
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Power System</div>
+        <div class="font-bold text-white text-sm leading-snug">LiFePO₄ Storage<br><span class="text-[#555] font-normal text-xs">High-efficiency solar harvesting — field-replaceable cells</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
-        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Edge Compute</div>
-        <div class="font-bold text-white text-sm leading-tight">4 TOPS NPU — 94.7%<br>species accuracy</div>
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Durability</div>
+        <div class="font-bold text-white text-sm leading-snug">IP67 Ruggedized<br><span class="text-[#555] font-normal text-xs">−30°C to +55°C — sub-zero operational envelope</span></div>
       </div>
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
         <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Compliance</div>
-        <div class="font-bold text-white text-sm leading-tight">J-SOC Tier II<br>MIC Radio Law</div>
+        <div class="font-bold text-white text-sm leading-snug">SOC 2 Type II · MIC<br><span class="text-[#555] font-normal text-xs">mTLS mesh · SCADA API · EPSS threat modeling</span></div>
       </div>
 
     </div>
 
-    <!-- Spec footnote -->
     <div class="mt-8 mono text-[9px] text-[#2a2a2a] leading-6">
-      All specifications represent nominal field performance. Sustained 14 km/h gait measured across Type-3 satoyama terrain at 15°C ambient.
-      Hydrogen refuel canister exchange performed by certified LycosAI Field Operations personnel.
+      All specifications represent nominal field performance. 14 km/h gait measured across Type-3 satoyama terrain at 15°C ambient.
       94.7% species classification accuracy measured against JSDB-v4 validation set (n=48,200 annotated thermal frames).
-      J-SOC Tier II certification pending final field audit — expected Q3 2026.
+      LiFePO₄ cells are field-replaceable by certified LycosAI Field Operations personnel.
+      SOC 2 Type II report available under NDA to qualified prospects.
     </div>
 
   </div>
@@ -628,7 +670,7 @@
 <section id="access" class="py-20 px-6 bg-[#0d0d0d] tactical-grid">
   <div class="max-w-3xl mx-auto text-center">
 
-    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">04 — Access</div>
+    <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">05 — Access</div>
     <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-6 leading-tight text-balance">
       Deployment Capacity Is Limited
     </h2>
@@ -946,6 +988,30 @@
      JAVASCRIPT
 ══════════════════════════════════════════ -->
 <script>
+  // ── Telemetry terminal ticker ─────────────
+  const telemetryEvents = [
+    '<span class="text-[#22c55e]">[INFO]</span>    Node-Alpha-09: CV inference complete. Class: <span class="text-white">Ursidae</span>. Confidence: <span class="text-[#22c55e]">98.4%</span>.',
+    '<span class="text-[#a3e635]">[MESH]</span>    Synchronizing local edge nodes via ultra-wideband (UWB) mesh topology. Latency: <span class="text-white">34ms</span>.',
+    '<span class="text-[#555]">[SYS]</span>     Executing routine RF environment scan. Signal integrity: <span class="text-[#22c55e]">100%</span>. No spoofing detected.',
+    '<span class="text-[#ef4444]">[DISPATCH]</span> Non-lethal acoustic deterrent protocol initiated in <span class="text-white">Sector 4</span>. Vocalization ID: wolf-07.',
+    '<span class="text-[#a3e635]">[SEC]</span>     Node-Beta-02: mTLS handshake verified. Encrypted telemetry stream active. Peer: <span class="text-white">Node-Alpha-09</span>.',
+    '<span class="text-[#555]">[SYS]</span>     Pack-Mind consensus achieved. Formation: <span class="text-white">perimeter-delta</span>. Units online: <span class="text-[#22c55e]">12/12</span>.',
+    '<span class="text-[#22c55e]">[INFO]</span>    Node-Gamma-05: Thermal signature detected at bearing <span class="text-white">247°</span>. Initiating species classification.',
+    '<span class="text-[#a3e635]">[MESH]</span>    LoRa failover active on Node-Delta-01. LTE link restored. Uptime: <span class="text-[#22c55e]">99.97%</span>.',
+  ];
+  let telIdx = 0;
+  const telEl = document.getElementById('telemetry-line');
+  function cycleTelemetry() {
+    telEl.innerHTML = telemetryEvents[telIdx % telemetryEvents.length];
+    telEl.classList.remove('term-line');
+    void telEl.offsetWidth;
+    telEl.classList.add('term-line');
+    telIdx++;
+  }
+  cycleTelemetry();
+  setInterval(cycleTelemetry, 3600);
+
+
   // ── Nav scroll glass ──────────────────────
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', () => {
