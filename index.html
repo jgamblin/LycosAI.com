@@ -214,7 +214,7 @@
   <div class="absolute top-24 left-6 mono text-[#22c55e] text-[9px] opacity-30 select-none hidden lg:block leading-5">
     <div>▶ SYS: NOMINAL</div>
     <div>▶ MESH: SYNCHRONIZED</div>
-    <div>▶ UNITS_ACTIVE: 847</div>
+    <div>▶ UNITS_ACTIVE: [RESTRICTED]</div>
     <div>▶ THREAT_LEVEL: ELEVATED</div>
   </div>
   <div class="absolute top-24 right-6 mono text-[#22c55e] text-[9px] opacity-30 text-right select-none hidden lg:block leading-5">
@@ -574,7 +574,7 @@
       Platform Specifications
     </h2>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
 
       <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
         <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Edge Compute</div>
@@ -611,6 +611,10 @@
         <div class="font-bold text-white text-sm leading-snug">IP67 Ruggedized<br><span class="text-[#555] font-normal text-xs">−30°C to +55°C, sub-zero operational envelope</span></div>
       </div>
 
+      <div class="spec-tile border border-[#1a1a1a] bg-[#111] rounded-sm p-5">
+        <div class="mono text-[9px] text-[#444] tracking-widest uppercase mb-3">Response Latency</div>
+        <div class="font-bold text-white text-sm leading-snug">Sub-2s Dispatch<br><span class="text-[#555] font-normal text-xs">Detection to deterrence, fully on-device</span></div>
+      </div>
 
     </div>
 
@@ -634,14 +638,18 @@
     <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-6 leading-tight">
       Deployment Capacity Is Limited
     </h2>
-    <p class="text-[#555] text-sm mb-4 max-w-xl leading-relaxed">
+    <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+    <div>
+    <p class="text-[#555] text-sm mb-4 leading-relaxed">
       LycosAI is not a self-serve product. Commercial terms are disclosed post-qualification under mutual NDA. Priority access is granted to organizations with verified threat exposure and operational readiness.
     </p>
-    <p class="text-[#333] mono text-[10px] mb-12 leading-relaxed">
+    <p class="text-[#333] mono text-[10px] mb-0 leading-relaxed">
       Scout &nbsp;·&nbsp; Pack &nbsp;·&nbsp; Alpha &nbsp;·&nbsp; Sovereign &nbsp;·&nbsp; Tier assignment determined during intake.
     </p>
+    </div>
 
-    <div class="border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-8 sm:p-10 max-w-xl">
+    <div class="border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-8 sm:p-10">
       <div class="mono text-[9px] text-[#333] tracking-widest uppercase mb-6">Qualification Criteria</div>
       <div class="space-y-4 text-left mb-10">
         <div class="flex items-start gap-4 text-[#666] text-sm">
@@ -667,6 +675,8 @@
       </button>
       <p class="mono text-[9px] text-[#2a2a2a] mt-4">Our field operations team reviews all requests within 1 business day. Capacity is allocated on a first-qualified basis.</p>
     </div>
+
+    </div><!-- end grid -->
 
   </div>
 </section>
@@ -706,8 +716,7 @@
         <div class="space-y-3 text-sm text-[#444]">
           <div><a href="#solution" class="hover:text-[#22c55e] transition-colors">Pack-Mind Mesh</a></div>
           <div><a href="#specs" class="hover:text-[#22c55e] transition-colors">Hardware Specs</a></div>
-          <div><a href="#" class="hover:text-[#22c55e] transition-colors">API Reference</a></div>
-          <div><a href="#" class="hover:text-[#22c55e] transition-colors">Status Page</a></div>
+          <div><a href="#access" class="hover:text-[#22c55e] transition-colors">Request Access</a></div>
         </div>
       </div>
 
