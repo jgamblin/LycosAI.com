@@ -181,10 +181,26 @@
       <a href="#access"     class="mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase">Access</a>
     </div>
 
-    <!-- CTA -->
-    <button onclick="openModal()" class="bg-[#ef4444] hover:bg-[#dc2626] text-white mono text-[10px] font-bold px-4 py-2.5 rounded tracking-widest uppercase transition-colors">
-      Request Deployment
-    </button>
+    <!-- Right: CTA + mobile menu button -->
+    <div class="flex items-center gap-3">
+      <button onclick="openModal()" class="bg-[#ef4444] hover:bg-[#dc2626] text-white mono text-[10px] font-bold px-4 py-2.5 rounded tracking-widest uppercase transition-colors">
+        Request Deployment
+      </button>
+      <!-- Hamburger (mobile only) -->
+      <button id="nav-toggle" onclick="toggleMobileNav()" class="md:hidden flex flex-col justify-center items-center gap-1.5 w-8 h-8" aria-label="Toggle menu">
+        <span class="nav-bar block w-5 h-px bg-[#555] transition-all duration-200"></span>
+        <span class="nav-bar block w-5 h-px bg-[#555] transition-all duration-200"></span>
+        <span class="nav-bar block w-5 h-px bg-[#555] transition-all duration-200"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-nav" class="hidden md:hidden border-t border-[#1a1a1a] mt-4 pt-4 pb-2 px-0 space-y-1">
+    <a href="#problem"  onclick="toggleMobileNav()" class="block mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase py-2">Problem</a>
+    <a href="#solution" onclick="toggleMobileNav()" class="block mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase py-2">Solution</a>
+    <a href="#specs"    onclick="toggleMobileNav()" class="block mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase py-2">Specs</a>
+    <a href="#access"   onclick="toggleMobileNav()" class="block mono text-[10px] text-[#555] hover:text-[#22c55e] transition-colors tracking-widest uppercase py-2">Access</a>
   </div>
 </nav>
 
@@ -357,7 +373,7 @@
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#ef4444] tracking-widest uppercase mb-3">01 / Market Conditions</div>
-    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-10 leading-tight whitespace-nowrap">
+    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-10 leading-tight">
       The Legacy Scarecrow Is Not Scalable.
     </h2>
 
@@ -459,7 +475,7 @@
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">02 / Platform Architecture</div>
-    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-4 leading-tight whitespace-nowrap">
+    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-4 leading-tight">
       Pack-Mind Autonomous Deterrence Infrastructure
     </h2>
     <p class="text-[#555] text-sm max-w-xl mb-16 leading-relaxed">
@@ -475,7 +491,7 @@
           <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot"></div>
           <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
         </div>
-        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Pack-Mind<br>Mesh Networking</h3>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Pack-Mind Mesh Networking</h3>
         <p class="text-[#666] text-sm leading-relaxed mb-5">
           Every deployed unit participates in a self-organizing, self-healing peer-to-peer mesh with sub-50ms latency.
           Topology adapts dynamically to unit failure, terrain occlusion, and pack formation changes.
@@ -495,7 +511,7 @@
           <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot" style="animation-delay:.4s"></div>
           <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
         </div>
-        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Computer Vision<br>Species Classification</h3>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Computer Vision Species Classification</h3>
         <p class="text-[#666] text-sm leading-relaxed mb-5">
           Dual LWIR and RGB sensor fusion enables accurate species identification at 40 meters in total darkness.
           Our YOLO-derivative edge model achieves 94.7% classification accuracy across bear, boar, and deer threat
@@ -515,7 +531,7 @@
           <div class="w-1.5 h-1.5 rounded-full bg-[#22c55e] status-dot" style="animation-delay:.8s"></div>
           <span class="mono text-[9px] text-[#22c55e] tracking-widest uppercase">Operational</span>
         </div>
-        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Dynamic Acoustic<br>Deterrence Array</h3>
+        <h3 class="font-bold text-white text-lg mb-3 leading-tight">Dynamic Acoustic Deterrence Array</h3>
         <p class="text-[#666] text-sm leading-relaxed mb-5">
           A 95dB omnidirectional speaker system with a library of 37 species-matched wolf vocalizations, dynamically
           selected per threat classification to prevent habituation. Frequency modulation adapts in real time based
@@ -532,7 +548,7 @@
 
     <!-- Architecture callout -->
     <div class="mt-10 border border-[#1a1a1a] bg-[#0e0e0e] rounded-sm p-6 flex flex-col md:flex-row items-start md:items-center gap-6">
-      <div class="mono text-[10px] text-[#22c55e] tracking-widest whitespace-nowrap">ARCHITECTURE NOTE</div>
+      <div class="mono text-[10px] text-[#22c55e] tracking-widest">ARCHITECTURE NOTE</div>
       <div class="w-px h-8 bg-[#1e1e1e] hidden md:block"></div>
       <p class="mono text-[10px] text-[#444] leading-relaxed">
         All LycosAI units operate in a fully offline-capable mode. Pack-Mind consensus, species classification, and
@@ -554,7 +570,7 @@
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">03 / Hardware Platform</div>
-    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-10 leading-tight whitespace-nowrap">
+    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-10 leading-tight">
       Platform Specifications
     </h2>
 
@@ -612,20 +628,20 @@
      PRICING
 ══════════════════════════════════════════ -->
 <section id="access" class="py-20 px-6 bg-[#0d0d0d] tactical-grid">
-  <div class="max-w-3xl mx-auto text-center">
+  <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">04 / Access</div>
-    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-6 leading-tight whitespace-nowrap">
+    <h2 class="font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white mb-6 leading-tight">
       Deployment Capacity Is Limited
     </h2>
-    <p class="text-[#555] text-sm mb-4 max-w-xl mx-auto leading-relaxed">
+    <p class="text-[#555] text-sm mb-4 max-w-xl leading-relaxed">
       LycosAI is not a self-serve product. Commercial terms are disclosed post-qualification under mutual NDA. Priority access is granted to organizations with verified threat exposure and operational readiness.
     </p>
     <p class="text-[#333] mono text-[10px] mb-12 leading-relaxed">
       Scout &nbsp;·&nbsp; Pack &nbsp;·&nbsp; Alpha &nbsp;·&nbsp; Sovereign &nbsp;·&nbsp; Tier assignment determined during intake.
     </p>
 
-    <div class="border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-10 max-w-xl mx-auto">
+    <div class="border border-[#1e1e1e] bg-[#0f0f0f] rounded-sm p-8 sm:p-10 max-w-xl">
       <div class="mono text-[9px] text-[#333] tracking-widest uppercase mb-6">Qualification Criteria</div>
       <div class="space-y-4 text-left mb-10">
         <div class="flex items-start gap-4 text-[#666] text-sm">
@@ -942,6 +958,13 @@
   }
   cycleTelemetry();
   setInterval(cycleTelemetry, 3600);
+
+
+  // ── Mobile nav toggle ─────────────────────
+  function toggleMobileNav() {
+    const menu = document.getElementById('mobile-nav');
+    menu.classList.toggle('hidden');
+  }
 
 
   // ── Nav scroll glass ──────────────────────
