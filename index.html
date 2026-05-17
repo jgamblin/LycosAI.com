@@ -190,7 +190,7 @@
 <!-- ══════════════════════════════════════════
      HERO
 ══════════════════════════════════════════ -->
-<section class="tactical-grid scanlines min-h-screen flex flex-col items-center justify-center relative overflow-hidden pt-20 pb-12">
+<section class="tactical-grid scanlines min-h-screen flex flex-col items-center justify-center relative overflow-hidden pt-20 pb-20">
 
   <!-- Corner HUD overlays -->
   <div class="absolute top-24 left-6 mono text-[#22c55e] text-[9px] opacity-30 select-none hidden lg:block leading-5">
@@ -326,21 +326,6 @@
     </a>
   </div>
 
-  <!-- Stats row -->
-  <div id="hero-stats" class="grid grid-cols-3 gap-4 md:gap-12 mt-16 px-6 z-10 border-t border-[#1c1c1c] pt-8 w-full max-w-2xl">
-    <div class="text-center">
-      <div class="font-black text-3xl md:text-4xl text-white tabular-nums" data-counter="847">0</div>
-      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Units&nbsp;Active</div>
-    </div>
-    <div class="text-center">
-      <div class="font-black text-3xl md:text-4xl text-white tabular-nums" data-counter="23">0</div>
-      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Prefectures</div>
-    </div>
-    <div class="text-center">
-      <div class="font-black text-3xl md:text-4xl text-[#22c55e] tabular-nums" data-counter="0">0</div>
-      <div class="mono text-[9px] text-[#444] mt-1.5 tracking-widest uppercase">Bear&nbsp;Incidents</div>
-    </div>
-  </div>
 
   <div class="absolute bottom-7 left-1/2 -translate-x-1/2 mono text-[#2a2a2a] text-[9px] tracking-widest animate-bounce select-none z-10">
     SCROLL ↓
@@ -378,12 +363,12 @@
 <!-- ══════════════════════════════════════════
      THE PROBLEM
 ══════════════════════════════════════════ -->
-<section id="problem" class="py-28 px-6 bg-[#0f0f0f]">
+<section id="problem" class="py-20 px-6 bg-[#0f0f0f]">
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#ef4444] tracking-widest uppercase mb-3">01 — Market Conditions</div>
-    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-16 max-w-3xl leading-tight">
-      The Legacy Scarecrow<br>Is Not Scalable.
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-10 max-w-2xl leading-tight text-balance">
+      The Legacy Scarecrow Is Not Scalable.
     </h2>
 
     <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
@@ -480,12 +465,12 @@
 <!-- ══════════════════════════════════════════
      THE SOLUTION
 ══════════════════════════════════════════ -->
-<section id="solution" class="py-28 px-6 bg-[#0d0d0d] tactical-grid">
+<section id="solution" class="py-20 px-6 bg-[#0d0d0d] tactical-grid">
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">02 — Platform Architecture</div>
-    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-4 max-w-4xl leading-tight">
-      Pack-Mind Autonomous<br>Deterrence Infrastructure
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-4 max-w-3xl leading-tight text-balance">
+      Pack-Mind Autonomous Deterrence Infrastructure
     </h2>
     <p class="text-[#555] text-sm max-w-xl mb-16 leading-relaxed">
       Three integrated subsystems. One unified command surface. Zero legacy dependencies.
@@ -573,11 +558,11 @@
 <!-- ══════════════════════════════════════════
      TECHNICAL SPECIFICATIONS
 ══════════════════════════════════════════ -->
-<section id="specs" class="py-28 px-6 bg-[#0a0a0a]">
+<section id="specs" class="py-20 px-6 bg-[#0a0a0a]">
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">03 — Hardware Platform</div>
-    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-16 max-w-3xl leading-tight">
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-10 max-w-3xl leading-tight text-balance">
       Platform Specifications
     </h2>
 
@@ -640,11 +625,11 @@
 <!-- ══════════════════════════════════════════
      PRICING
 ══════════════════════════════════════════ -->
-<section id="pricing" class="py-28 px-6 bg-[#0d0d0d] tactical-grid">
+<section id="pricing" class="py-20 px-6 bg-[#0d0d0d] tactical-grid">
   <div class="max-w-7xl mx-auto">
 
     <div class="mono text-[10px] text-[#22c55e] tracking-widest uppercase mb-3">04 — Commercial Terms</div>
-    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-3 leading-tight">
+    <h2 class="font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white mb-3 leading-tight text-balance">
       Agentic Deterrence Platform
     </h2>
     <p class="text-[#555] text-sm mb-16 max-w-lg leading-relaxed">
@@ -1094,34 +1079,6 @@
     nav.classList.toggle('nav-scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  // ── Counter animation ─────────────────────
-  function animateCounter(el) {
-    const target = parseInt(el.dataset.counter, 10);
-    if (target === 0) return; // stays 0
-    const duration = 1800;
-    const start = performance.now();
-    function tick(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      el.textContent = Math.floor(eased * target).toLocaleString();
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target.toLocaleString();
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('[data-counter]').forEach(animateCounter);
-        statsObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  const statsEl = document.getElementById('hero-stats');
-  if (statsEl) statsObserver.observe(statsEl);
 
   // ── Modal ─────────────────────────────────
   let currentStep = 1;
